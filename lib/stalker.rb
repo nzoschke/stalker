@@ -56,6 +56,7 @@ module Stalker
 	def work_one_job
 		job = beanstalk.reserve
 		name, args = JSON.parse job.body
+		args['job'] = job
 		log_job_begin(name, args)
 		handler = @@handlers[name]
 		raise(NoSuchJob, name) unless handler

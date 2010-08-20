@@ -38,5 +38,11 @@ class StalkerTest < Test::Unit::TestCase
 		Stalker.prep
 		Stalker.work_one_job
 		assert_equal false, $handled
+
+	test "access beanstalk job object" do
+		Stalker.job('my.job') { |args| assert_equal Beanstalk::Job, args['job'].class }
+		Stalker.enqueue('my.job')
+		Stalker.prep
+		Stalker.work_one_job
 	end
 end
